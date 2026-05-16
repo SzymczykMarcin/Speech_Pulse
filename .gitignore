@@ -4,8 +4,7 @@
 .dart_tool/
 .packages
 build/
-# If you're building an application, you may want to check-in your pubspec.lock
-pubspec.lock
+# Application projects should commit pubspec.lock for reproducible builds.
 
 # Directory created by dartdoc
 # If you don't generate documentation locally you can remove this line.
@@ -27,3 +26,16 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
+
+# IDE and local workspace metadata
+.idea/
+*.iml
+.metadata
+
+# Reference/design inputs used to create the app, not app runtime assets
+Screens_Designe/
+SPEECH_PULSE_IMPLEMENTATION_PROMPT.md
+icons/
+
+# Local emulator and tooling logs
+*.log

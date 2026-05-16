@@ -1,0 +1,11 @@
+{
+  "name": "Speech Pulse",
+  "short_name": "Speech Pulse",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#131313",
+  "theme_color": "#ffe2ab",
+  "description": "Local-only filler sound counter for public speaking meetings.",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false
+}
