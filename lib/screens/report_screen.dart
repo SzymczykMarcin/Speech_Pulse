@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../debug_log.dart';
 import '../models/meeting_session.dart';
 import '../services/report_builder.dart';
 import '../theme.dart';
@@ -21,7 +22,7 @@ class ReportScreen extends StatelessWidget {
             'Meeting Report',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  color: PulseColors.onSurface,
+                  color: context.pulseOnSurface,
                   fontWeight: FontWeight.w700,
                 ),
           ),
@@ -31,12 +32,12 @@ class ReportScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Row(
+                  Row(
                     children: [
                       Icon(Icons.assignment_outlined,
-                          color: PulseColors.secondary),
-                      SizedBox(width: 8),
-                      Text(
+                          color: context.pulseSecondary),
+                      const SizedBox(width: 8),
+                      const Text(
                         'Participant Summary',
                         style: TextStyle(
                             fontSize: 22, fontWeight: FontWeight.w700),
@@ -52,7 +53,7 @@ class ReportScreen extends StatelessWidget {
                         final participant = session.participants[index];
                         return DecoratedBox(
                           decoration: BoxDecoration(
-                            color: PulseColors.surfaceHigh,
+                            color: context.pulseSurfaceHigh,
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Padding(
@@ -90,8 +91,8 @@ class ReportScreen extends StatelessWidget {
                       ),
                       Text(
                         '${session.totalCount}',
-                        style: const TextStyle(
-                          color: PulseColors.primary,
+                        style: TextStyle(
+                          color: context.pulsePrimary,
                           fontSize: 48,
                           fontWeight: FontWeight.w800,
                         ),
@@ -105,6 +106,7 @@ class ReportScreen extends StatelessWidget {
           const SizedBox(height: 16),
           ElevatedButton.icon(
             onPressed: () async {
+              appDebugLog('Report: Copy Report tapped');
               await Clipboard.setData(
                 ClipboardData(text: ReportBuilder.build(session)),
               );
@@ -122,8 +124,10 @@ class ReportScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: () =>
-                      Navigator.popUntil(context, (route) => route.isFirst),
+                  onPressed: () {
+                    appDebugLog('Report: New Meeting tapped');
+                    Navigator.popUntil(context, (route) => route.isFirst);
+                  },
                   icon: const Icon(Icons.add),
                   label: const Text('New Meeting'),
                 ),
@@ -131,8 +135,10 @@ class ReportScreen extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: () =>
-                      Navigator.popUntil(context, (route) => route.isFirst),
+                  onPressed: () {
+                    appDebugLog('Report: Back Home tapped');
+                    Navigator.popUntil(context, (route) => route.isFirst);
+                  },
                   icon: const Icon(Icons.home),
                   label: const Text('Back Home'),
                 ),

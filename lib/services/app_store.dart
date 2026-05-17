@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../debug_log.dart';
 import '../models/app_settings.dart';
 import '../models/person.dart';
 
@@ -21,6 +22,7 @@ class AppStore extends ChangeNotifier {
   bool get loaded => _loaded;
 
   Future<void> load() async {
+    appDebugLog('AppStore.load started');
     _preferences ??= await SharedPreferences.getInstance();
     final prefs = _preferences!;
     final rawPeople = prefs.getString(_peopleKey);
@@ -35,10 +37,16 @@ class AppStore extends ChangeNotifier {
       ),
     );
     _loaded = true;
+    appDebugLog(
+      'AppStore.load completed: people=${_people.length}, '
+      'theme=${_settings.themePreference.name}, '
+      'button=${_settings.countButtonOption.name}',
+    );
     notifyListeners();
   }
 
   Future<void> addPerson(String name) async {
+    appDebugLog('AppStore.addPerson requested');
     final trimmed = name.trim();
     if (Person.validateName(trimmed) != null) {
       throw ArgumentError('Name is required');
@@ -54,6 +62,7 @@ class AppStore extends ChangeNotifier {
   }
 
   Future<void> updatePerson(Person person, String name) async {
+    appDebugLog('AppStore.updatePerson requested: ${person.id}');
     final trimmed = name.trim();
     if (Person.validateName(trimmed) != null) {
       throw ArgumentError('Name is required');
@@ -66,11 +75,17 @@ class AppStore extends ChangeNotifier {
   }
 
   Future<void> deletePerson(Person person) async {
+    appDebugLog('AppStore.deletePerson requested: ${person.id}');
     _people = _people.where((item) => item.id != person.id).toList();
     await _savePeople();
   }
 
   Future<void> updateSettings(AppSettings settings) async {
+    appDebugLog(
+      'AppStore.updateSettings requested: '
+      'theme=${settings.themePreference.name}, '
+      'button=${settings.countButtonOption.name}',
+    );
     _settings = settings;
     final prefs = _preferences!;
     await prefs.setString(

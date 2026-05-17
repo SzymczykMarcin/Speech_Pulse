@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../debug_log.dart';
 import '../models/app_settings.dart';
 import '../models/meeting_session.dart';
 import '../models/person.dart';
@@ -46,6 +47,7 @@ class _ActiveMeetingScreenState extends State<ActiveMeetingScreen> {
   }
 
   void _increment() {
+    appDebugLog('ActiveMeeting: AH button tapped');
     setState(_session.incrementSelected);
     final option = widget.store.settings.countButtonOption;
     final player = widget.playCountSound;
@@ -57,6 +59,7 @@ class _ActiveMeetingScreenState extends State<ActiveMeetingScreen> {
   }
 
   void _endMeeting() {
+    appDebugLog('ActiveMeeting: End Meeting tapped');
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (_) => ReportScreen(session: _session)),
@@ -73,21 +76,26 @@ class _ActiveMeetingScreenState extends State<ActiveMeetingScreen> {
             Container(
               width: double.infinity,
               padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
-              decoration: const BoxDecoration(
-                color: PulseColors.background,
-                border: Border(bottom: BorderSide(color: Colors.white10)),
+              decoration: BoxDecoration(
+                color: context.pulseBackground,
+                border: Border(
+                  bottom: BorderSide(color: context.pulsePanelBorder),
+                ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      const Text('PARTICIPANTS', style: PulseText.label),
+                      Text(
+                        'PARTICIPANTS',
+                        style: context.pulseSectionLabel,
+                      ),
                       const SizedBox(width: 8),
                       Text(
                         '(${_session.participants.length})',
-                        style: const TextStyle(
-                          color: PulseColors.onSurfaceVariant,
+                        style: TextStyle(
+                          color: context.pulseOnSurfaceVariant,
                         ),
                       ),
                     ],
@@ -108,7 +116,13 @@ class _ActiveMeetingScreenState extends State<ActiveMeetingScreen> {
                               selected: participant.person.id ==
                                   _session.selectedPersonId,
                               onTap: () => setState(
-                                () => _session.select(participant.person.id),
+                                () {
+                                  appDebugLog(
+                                    'ActiveMeeting: participant selected '
+                                    '${participant.person.id}',
+                                  );
+                                  _session.select(participant.person.id);
+                                },
                               ),
                             ),
                         ],
@@ -132,7 +146,10 @@ class _ActiveMeetingScreenState extends State<ActiveMeetingScreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text('COUNTING FOR:', style: PulseText.label),
+                            Text(
+                              'COUNTING FOR:',
+                              style: context.pulseSectionLabel,
+                            ),
                             const SizedBox(height: 6),
                             Text(
                               selected.person.name,
@@ -141,7 +158,7 @@ class _ActiveMeetingScreenState extends State<ActiveMeetingScreen> {
                                   .textTheme
                                   .headlineMedium
                                   ?.copyWith(
-                                    color: PulseColors.primary,
+                                    color: context.pulsePrimary,
                                     fontWeight: FontWeight.w700,
                                   ),
                             ),
@@ -154,7 +171,7 @@ class _ActiveMeetingScreenState extends State<ActiveMeetingScreen> {
                                   shape: BoxShape.circle,
                                   boxShadow: [
                                     BoxShadow(
-                                      color: PulseColors.primaryContainer
+                                      color: context.pulsePrimaryContainer
                                           .withOpacity(0.22),
                                       blurRadius: 40,
                                     ),
@@ -165,7 +182,7 @@ class _ActiveMeetingScreenState extends State<ActiveMeetingScreen> {
                                   style: ElevatedButton.styleFrom(
                                     enableFeedback: false,
                                     shape: const CircleBorder(),
-                                    backgroundColor: PulseColors.primary,
+                                    backgroundColor: context.pulsePrimary,
                                   ),
                                   onPressed: _increment,
                                   child: Column(
@@ -199,8 +216,8 @@ class _ActiveMeetingScreenState extends State<ActiveMeetingScreen> {
                                   _session.lastEvent == null
                                       ? 'Ready'
                                       : 'Last: ${_session.lastEvent!.personName} +1',
-                                  style: const TextStyle(
-                                    color: PulseColors.secondary,
+                                  style: TextStyle(
+                                    color: context.pulseSecondary,
                                     fontSize: 16,
                                   ),
                                 ),
@@ -223,7 +240,10 @@ class _ActiveMeetingScreenState extends State<ActiveMeetingScreen> {
                       key: const Key('undoButton'),
                       onPressed: _session.events.isEmpty
                           ? null
-                          : () => setState(_session.undoLast),
+                          : () {
+                              appDebugLog('ActiveMeeting: Undo tapped');
+                              setState(_session.undoLast);
+                            },
                       icon: const Icon(Icons.undo),
                       label: const Text('Undo'),
                     ),
@@ -234,9 +254,9 @@ class _ActiveMeetingScreenState extends State<ActiveMeetingScreen> {
                     child: FilledButton.icon(
                       style: FilledButton.styleFrom(
                         enableFeedback: false,
-                        backgroundColor: PulseColors.surfaceHigh,
-                        foregroundColor: PulseColors.error,
-                        side: const BorderSide(color: PulseColors.error),
+                        backgroundColor: context.pulseSurfaceHigh,
+                        foregroundColor: context.pulseError,
+                        side: BorderSide(color: context.pulseError),
                       ),
                       onPressed: _endMeeting,
                       icon: const Icon(Icons.stop_circle_outlined),
@@ -271,9 +291,9 @@ class _ParticipantChip extends StatelessWidget {
       visualDensity: VisualDensity.compact,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       backgroundColor:
-          selected ? PulseColors.primaryContainer : PulseColors.surface,
+          selected ? context.pulsePrimaryContainer : context.pulseSurface,
       side: BorderSide(
-        color: selected ? PulseColors.primary : PulseColors.outline,
+        color: selected ? context.pulsePrimary : context.pulseOutline,
       ),
       label: Row(
         mainAxisSize: MainAxisSize.min,
@@ -283,7 +303,7 @@ class _ParticipantChip extends StatelessWidget {
             style: TextStyle(
               color: selected
                   ? PulseColors.onPrimary
-                  : PulseColors.onSurfaceVariant,
+                  : context.pulseOnSurfaceVariant,
               fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
             ),
           ),
@@ -291,8 +311,8 @@ class _ParticipantChip extends StatelessWidget {
           DecoratedBox(
             decoration: BoxDecoration(
               color: selected
-                  ? PulseColors.background.withOpacity(0.18)
-                  : PulseColors.surfaceVariant,
+                  ? PulseColors.onPrimary.withOpacity(0.18)
+                  : context.pulseSurfaceVariant,
               borderRadius: BorderRadius.circular(999),
             ),
             child: Padding(
@@ -302,7 +322,7 @@ class _ParticipantChip extends StatelessWidget {
                 style: TextStyle(
                   color: selected
                       ? PulseColors.onPrimary
-                      : PulseColors.onSurfaceVariant,
+                      : context.pulseOnSurfaceVariant,
                   fontWeight: FontWeight.w700,
                 ),
               ),

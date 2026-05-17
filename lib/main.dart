@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 
+import 'debug_log.dart';
 import 'models/app_settings.dart';
 import 'screens/home_screen.dart';
 import 'services/app_store.dart';
 import 'theme.dart';
 
 void main() {
+  FlutterError.onError = (details) {
+    FlutterError.presentError(details);
+    appDebugLog('Flutter error: ${details.exceptionAsString()}');
+  };
+  appDebugLog('App starting');
   runApp(SpeechPulseApp(store: AppStore()));
 }
 
@@ -22,6 +28,7 @@ class _SpeechPulseAppState extends State<SpeechPulseApp> {
   @override
   void initState() {
     super.initState();
+    appDebugLog('SpeechPulseApp initState: loading store');
     widget.store.load();
     widget.store.addListener(_onStoreChanged);
   }
@@ -32,7 +39,15 @@ class _SpeechPulseAppState extends State<SpeechPulseApp> {
     super.dispose();
   }
 
-  void _onStoreChanged() => setState(() {});
+  void _onStoreChanged() {
+    appDebugLog(
+      'Store changed: loaded=${widget.store.loaded}, '
+      'theme=${widget.store.settings.themePreference.name}, '
+      'button=${widget.store.settings.countButtonOption.name}, '
+      'people=${widget.store.people.length}',
+    );
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -36,6 +36,10 @@ doc/api/
 Screens_Designe/
 SPEECH_PULSE_IMPLEMENTATION_PROMPT.md
 icons/
+!assets/icons/
+!assets/icons/*.png
+input sounds/
+logs/
 
 # Local emulator and tooling logs
 *.log

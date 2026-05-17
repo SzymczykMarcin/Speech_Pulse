@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../debug_log.dart';
 import '../models/app_settings.dart';
 import '../services/app_store.dart';
 import '../theme.dart';
@@ -18,6 +19,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   AppSettings get _settings => widget.store.settings;
 
   Future<void> _save(AppSettings settings) async {
+    appDebugLog(
+      'Settings: save requested theme=${settings.themePreference.name}, '
+      'button=${settings.countButtonOption.name}',
+    );
     await widget.store.updateSettings(settings);
     setState(() {});
   }
@@ -30,7 +35,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Text(
             'Settings',
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  color: PulseColors.onSurface,
+                  color: context.pulseOnSurface,
                   fontWeight: FontWeight.w700,
                 ),
           ),
@@ -103,14 +108,15 @@ class _ButtonOptionTile extends StatelessWidget {
       enableFeedback: false,
       borderRadius: BorderRadius.circular(12),
       onTap: onTap,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: selected ? PulseColors.secondary : PulseColors.surfaceHigh,
+      child: Material(
+        color: selected ? context.pulseSecondary : context.pulseSurfaceHigh,
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: selected ? PulseColors.secondary : Colors.white10,
+          side: BorderSide(
+            color: selected ? context.pulseSecondary : context.pulsePanelBorder,
           ),
         ),
+        clipBehavior: Clip.antiAlias,
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Row(
@@ -123,7 +129,7 @@ class _ButtonOptionTile extends StatelessWidget {
                   style: TextStyle(
                     color: selected
                         ? PulseColors.background
-                        : PulseColors.onSurface,
+                        : context.pulseOnSurface,
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                   ),
@@ -133,7 +139,7 @@ class _ButtonOptionTile extends StatelessWidget {
                 selected ? Icons.check_circle : Icons.circle_outlined,
                 color: selected
                     ? PulseColors.background
-                    : PulseColors.onSurfaceVariant,
+                    : context.pulseOnSurfaceVariant,
               ),
             ],
           ),

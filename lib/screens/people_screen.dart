@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../debug_log.dart';
 import '../models/person.dart';
 import '../services/app_store.dart';
 import '../theme.dart';
@@ -30,6 +31,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
   void _onStoreChanged() => setState(() {});
 
   Future<void> _addPerson() async {
+    appDebugLog('People: Add Person tapped');
     final name = await showNameDialog(context, title: 'Add person');
     if (name != null) {
       await widget.store.addPerson(name);
@@ -37,6 +39,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
   }
 
   Future<void> _editPerson(Person person) async {
+    appDebugLog('People: Edit tapped for ${person.id}');
     final name = await showNameDialog(
       context,
       title: 'Edit person',
@@ -48,6 +51,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
   }
 
   Future<void> _deletePerson(Person person) async {
+    appDebugLog('People: Delete tapped for ${person.id}');
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -86,14 +90,14 @@ class _PeopleScreenState extends State<PeopleScreen> {
           Text(
             'People',
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  color: PulseColors.onSurface,
+                  color: context.pulseOnSurface,
                   fontWeight: FontWeight.w700,
                 ),
           ),
           const SizedBox(height: 8),
-          const Text(
+          Text(
             'Manage local participants saved only on this device.',
-            style: TextStyle(color: PulseColors.onSurfaceVariant),
+            style: TextStyle(color: context.pulseOnSurfaceVariant),
           ),
           const SizedBox(height: 24),
           ElevatedButton.icon(
@@ -104,10 +108,10 @@ class _PeopleScreenState extends State<PeopleScreen> {
           const SizedBox(height: 16),
           Expanded(
             child: widget.store.people.isEmpty
-                ? const Center(
+                ? Center(
                     child: Text(
                       'No saved people yet.',
-                      style: TextStyle(color: PulseColors.onSurfaceVariant),
+                      style: TextStyle(color: context.pulseOnSurfaceVariant),
                     ),
                   )
                 : ListView.separated(

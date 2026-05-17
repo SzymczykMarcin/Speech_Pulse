@@ -10,17 +10,17 @@ class AboutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return PulsePage(
       child: ListView(
-        children: const [
+        children: [
           Text(
             'About',
             style: TextStyle(
-              color: PulseColors.onSurface,
+              color: context.pulseOnSurface,
               fontSize: 28,
               fontWeight: FontWeight.w700,
             ),
           ),
-          SizedBox(height: 24),
-          SurfacePanel(
+          const SizedBox(height: 24),
+          const SurfacePanel(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -36,8 +36,8 @@ class AboutScreen extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 16),
-          SurfacePanel(
+          const SizedBox(height: 16),
+          const SurfacePanel(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -50,8 +50,8 @@ class AboutScreen extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 16),
-          SurfacePanel(
+          const SizedBox(height: 16),
+          const SurfacePanel(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -59,14 +59,17 @@ class AboutScreen extends StatelessWidget {
                 SizedBox(height: 12),
                 Text('Author website: https://example.com/marcin'),
                 SizedBox(height: 8),
-                Text('Buy Me a Coffee: https://buymeacoffee.com/placeholder'),
+                Text(
+                  'Buy Me a Coffee: https://buymeacoffee.com/marcinszymczyk',
+                ),
               ],
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text(
             'Privacy: participant names and preferences stay on this device. Speech Pulse does not use accounts, analytics, ads, cloud sync, or telemetry.',
-            style: TextStyle(color: PulseColors.onSurfaceVariant, height: 1.45),
+            style:
+                TextStyle(color: context.pulseOnSurfaceVariant, height: 1.45),
           ),
         ],
       ),

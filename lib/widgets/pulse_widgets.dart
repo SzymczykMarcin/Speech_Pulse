@@ -43,11 +43,9 @@ class SurfacePanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark
-            ? PulseColors.surface
-            : Colors.white,
+        color: context.pulseSurface,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white10),
+        border: Border.all(color: context.pulsePanelBorder),
       ),
       child: Padding(
         padding: EdgeInsets.all(padding),
@@ -64,7 +62,7 @@ class SectionLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text.toUpperCase(), style: PulseText.label);
+    return Text(text.toUpperCase(), style: context.pulseSectionLabel);
   }
 }
 

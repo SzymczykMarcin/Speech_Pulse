@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../debug_log.dart';
 import '../services/app_store.dart';
 import '../theme.dart';
 import '../widgets/pulse_widgets.dart';
@@ -30,7 +31,7 @@ class HomeScreen extends StatelessWidget {
                     'Speech Pulse',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                          color: PulseColors.primary,
+                          color: context.pulsePrimary,
                           fontWeight: FontWeight.w700,
                         ),
                   ),
@@ -39,16 +40,16 @@ class HomeScreen extends StatelessWidget {
                     'Ah Counter for Speakers',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          color: PulseColors.onSurface,
+                          color: context.pulseOnSurface,
                           fontWeight: FontWeight.w600,
                         ),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
+                  Text(
                     'Fast filler sound tracking for speaking meetings.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: PulseColors.onSurfaceVariant,
+                      color: context.pulseOnSurfaceVariant,
                       fontSize: 18,
                     ),
                   ),
@@ -58,42 +59,54 @@ class HomeScreen extends StatelessWidget {
                     child: ElevatedButton.icon(
                       icon: const Icon(Icons.play_circle_fill, size: 36),
                       label: const Text('Start Meeting'),
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => MeetingSetupScreen(store: store),
-                        ),
-                      ),
+                      onPressed: () {
+                        appDebugLog('Home: Start Meeting tapped');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => MeetingSetupScreen(store: store),
+                          ),
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(height: 32),
                   _HomeAction(
                     icon: Icons.groups,
                     label: 'People',
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => PeopleScreen(store: store),
-                      ),
-                    ),
+                    onTap: () {
+                      appDebugLog('Home: People tapped');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => PeopleScreen(store: store),
+                        ),
+                      );
+                    },
                   ),
                   _HomeAction(
                     icon: Icons.settings,
                     label: 'Settings',
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => SettingsScreen(store: store),
-                      ),
-                    ),
+                    onTap: () {
+                      appDebugLog('Home: Settings tapped');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => SettingsScreen(store: store),
+                        ),
+                      );
+                    },
                   ),
                   _HomeAction(
                     icon: Icons.info_outline,
                     label: 'About',
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const AboutScreen()),
-                    ),
+                    onTap: () {
+                      appDebugLog('Home: About tapped');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const AboutScreen()),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -120,34 +133,42 @@ class _HomeAction extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
-      child: InkWell(
-        enableFeedback: false,
-        borderRadius: BorderRadius.circular(12),
-        onTap: onTap,
-        child: SurfacePanel(
-          child: Row(
-            children: [
-              CircleAvatar(
-                backgroundColor: PulseColors.surfaceVariant,
-                foregroundColor: PulseColors.secondary,
-                child: Icon(icon),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Text(
-                  label,
-                  style: const TextStyle(
-                    color: PulseColors.onSurface,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
+      child: Material(
+        color: context.pulseSurface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(color: context.pulsePanelBorder),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          enableFeedback: false,
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: context.pulseSurfaceVariant,
+                  foregroundColor: context.pulseSecondary,
+                  child: Icon(icon),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    label,
+                    style: TextStyle(
+                      color: context.pulseOnSurface,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
-              ),
-              const Icon(
-                Icons.chevron_right,
-                color: PulseColors.onSurfaceVariant,
-              ),
-            ],
+                Icon(
+                  Icons.chevron_right,
+                  color: context.pulseOnSurfaceVariant,
+                ),
+              ],
+            ),
           ),
         ),
       ),

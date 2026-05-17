@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../debug_log.dart';
 import '../models/person.dart';
 import '../services/app_store.dart';
 import '../theme.dart';
@@ -25,6 +26,7 @@ class _MeetingSetupScreenState extends State<MeetingSetupScreen> {
       .toList();
 
   Future<void> _addGuest() async {
+    appDebugLog('MeetingSetup: Add guest tapped');
     final name = await showNameDialog(context, title: 'Add guest');
     if (name == null) {
       return;
@@ -35,12 +37,14 @@ class _MeetingSetupScreenState extends State<MeetingSetupScreen> {
       isGuest: true,
     );
     setState(() {
+      appDebugLog('MeetingSetup: guest added');
       _guests.add(guest);
       _selectedIds.add(guest.id);
     });
   }
 
   void _startCounting() {
+    appDebugLog('MeetingSetup: Start Counting tapped');
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -63,14 +67,14 @@ class _MeetingSetupScreenState extends State<MeetingSetupScreen> {
           Text(
             'Select participants',
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  color: PulseColors.onSurface,
+                  color: context.pulseOnSurface,
                   fontWeight: FontWeight.w700,
                 ),
           ),
           const SizedBox(height: 8),
-          const Text(
+          Text(
             'Choose who is speaking in this session.',
-            style: TextStyle(color: PulseColors.onSurfaceVariant),
+            style: TextStyle(color: context.pulseOnSurfaceVariant),
           ),
           const SizedBox(height: 24),
           Row(
@@ -79,6 +83,7 @@ class _MeetingSetupScreenState extends State<MeetingSetupScreen> {
                 onPressed: _availablePeople.isEmpty
                     ? null
                     : () => setState(() {
+                          appDebugLog('MeetingSetup: Select all toggled');
                           if (allSelected) {
                             _selectedIds.clear();
                           } else {
@@ -104,11 +109,11 @@ class _MeetingSetupScreenState extends State<MeetingSetupScreen> {
           const SizedBox(height: 16),
           Expanded(
             child: _availablePeople.isEmpty
-                ? const Center(
+                ? Center(
                     child: Text(
                       'Add people or a guest to prepare the meeting.',
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: PulseColors.onSurfaceVariant),
+                      style: TextStyle(color: context.pulseOnSurfaceVariant),
                     ),
                   )
                 : SingleChildScrollView(
@@ -126,18 +131,22 @@ class _MeetingSetupScreenState extends State<MeetingSetupScreen> {
                             ),
                             label: Text(person.name),
                             onSelected: (selected) => setState(() {
+                              appDebugLog(
+                                'MeetingSetup: participant ${person.id} '
+                                'selected=$selected',
+                              );
                               if (selected) {
                                 _selectedIds.add(person.id);
                               } else {
                                 _selectedIds.remove(person.id);
                               }
                             }),
-                            selectedColor: PulseColors.secondary,
+                            selectedColor: context.pulseSecondary,
                             checkmarkColor: PulseColors.background,
                             labelStyle: TextStyle(
                               color: _selectedIds.contains(person.id)
                                   ? PulseColors.background
-                                  : PulseColors.onSurface,
+                                  : context.pulseOnSurface,
                               fontSize: 16,
                             ),
                           ),
