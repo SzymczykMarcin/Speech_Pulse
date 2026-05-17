@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../debug_log.dart';
 import '../services/app_store.dart';
 import '../theme.dart';
-import '../widgets/pulse_widgets.dart';
 import 'about_screen.dart';
 import 'meeting_setup_screen.dart';
 import 'people_screen.dart';

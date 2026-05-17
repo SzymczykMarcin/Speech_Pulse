@@ -57,8 +57,6 @@ class AboutScreen extends StatelessWidget {
               children: [
                 SectionLabel('Links'),
                 SizedBox(height: 12),
-                Text('Author website: https://example.com/marcin'),
-                SizedBox(height: 8),
                 Text(
                   'Buy Me a Coffee: https://buymeacoffee.com/marcinszymczyk',
                 ),
