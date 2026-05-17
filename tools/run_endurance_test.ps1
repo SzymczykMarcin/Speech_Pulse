@@ -56,7 +56,7 @@ $memSampler = Start-Job -ScriptBlock {
   param($AdbPath, $TargetDevice, $OutFile)
   while ($true) {
     Add-Content -Path $OutFile -Value ("===== " + (Get-Date).ToString("o") + " =====")
-    & $AdbPath -s $TargetDevice shell dumpsys meminfo com.example.speech_pulse |
+    & $AdbPath -s $TargetDevice shell dumpsys meminfo com.marcinszymczyk.speechpulse |
       Add-Content -Path $OutFile
     Start-Sleep -Seconds 60
   }

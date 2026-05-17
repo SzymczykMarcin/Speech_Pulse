@@ -22,7 +22,7 @@ This app is not affiliated with, endorsed by, or sponsored by Toastmasters Inter
 
 The AH count button uses cleaned 512px icon assets generated from the source images in `icons/`. The count sound is mandatory and plays only when an AH count is recorded. It does not play for undo, navigation, participant switching, report copying, or settings changes.
 
-The bundled WAV cues in `assets/sounds/` are original generated tones created for this project to avoid third-party licensing ambiguity. No external sound files were copied into the project.
+The bundled WAV cues in `assets/sounds/` are edited from source sounds obtained from Freesound under CC0. Keep the original Freesound source filenames and license notes outside the runtime assets so release provenance stays traceable.
 
 ## Development
 

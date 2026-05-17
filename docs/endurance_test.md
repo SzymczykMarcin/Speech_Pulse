@@ -37,7 +37,7 @@ Each run writes files under `logs/endurance_<timestamp>/`:
 
 - `logcat.txt`: Flutter, Android runtime, activity, and input warnings
 - `logcat.err.txt`: logcat process errors
-- `meminfo.txt`: once-per-minute memory snapshots for `com.example.speech_pulse`
+- `meminfo.txt`: once-per-minute memory snapshots for `com.marcinszymczyk.speechpulse`
 
 The `logs/` directory is intentionally ignored by git.
 

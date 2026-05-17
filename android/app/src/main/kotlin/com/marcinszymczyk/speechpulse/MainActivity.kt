@@ -1,4 +1,4 @@
-package com.example.speech_pulse
+package com.marcinszymczyk.speechpulse
 
 import io.flutter.embedding.android.FlutterActivity
 

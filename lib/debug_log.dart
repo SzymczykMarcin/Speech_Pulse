@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 void appDebugLog(String message) {
-  debugPrint('[SpeechPulse] $message');
+  if (kDebugMode) {
+    debugPrint('[SpeechPulse] $message');
+  }
 }
