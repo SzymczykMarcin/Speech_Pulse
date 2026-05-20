@@ -31,8 +31,10 @@ class SupportPurchaseService extends ChangeNotifier {
   String? get message => _message;
 
   Future<void> load() async {
-    _purchaseSubscription ??=
-        _inAppPurchase.purchaseStream.listen(_handlePurchaseUpdates);
+    _purchaseSubscription ??= _inAppPurchase.purchaseStream.listen(
+      _handlePurchaseUpdates,
+      onError: _handlePurchaseStreamError,
+    );
 
     _loading = true;
     _message = null;
@@ -123,12 +125,31 @@ class SupportPurchaseService extends ChangeNotifier {
         _message = 'Purchase canceled.';
       }
 
-      if (purchase.pendingCompletePurchase) {
-        await _inAppPurchase.completePurchase(purchase);
-      }
+      await _completePurchaseIfNeeded(purchase);
     }
 
     notifyListeners();
+  }
+
+  void _handlePurchaseStreamError(Object error) {
+    _purchaseInProgress = false;
+    _message = 'Support purchase is unavailable right now.';
+    appDebugLog('Support purchase stream failed: $error');
+    notifyListeners();
+  }
+
+  Future<void> _completePurchaseIfNeeded(PurchaseDetails purchase) async {
+    if (!purchase.pendingCompletePurchase) {
+      return;
+    }
+
+    try {
+      await _inAppPurchase.completePurchase(purchase);
+    } catch (error) {
+      _purchaseInProgress = false;
+      _message = 'Could not finish the Google Play purchase.';
+      appDebugLog('Support purchase completion failed: $error');
+    }
   }
 
   @override

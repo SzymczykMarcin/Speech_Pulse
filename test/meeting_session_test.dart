@@ -8,6 +8,10 @@ void main() {
     Person(id: 'david', name: 'David'),
   ];
 
+  test('requires at least one participant', () {
+    expect(() => MeetingSession(const []), throwsArgumentError);
+  });
+
   test('increments the currently selected participant', () {
     final session = MeetingSession(people);
 

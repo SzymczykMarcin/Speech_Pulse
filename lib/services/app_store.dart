@@ -26,14 +26,13 @@ class AppStore extends ChangeNotifier {
     _preferences ??= await SharedPreferences.getInstance();
     final prefs = _preferences!;
     final rawPeople = prefs.getString(_peopleKey);
-    _people = rawPeople == null ? [] : Person.decodeList(rawPeople);
+    _people = _decodePeople(rawPeople);
     _settings = AppSettings(
-      countButtonOption: CountButtonOption.values.byName(
-        prefs.getString(_countButtonOptionKey) ??
-            CountButtonOption.hotelBell.name,
+      countButtonOption: _decodeCountButtonOption(
+        prefs.getString(_countButtonOptionKey),
       ),
-      themePreference: AppThemePreference.values.byName(
-        prefs.getString(_themePreferenceKey) ?? AppThemePreference.dark.name,
+      themePreference: _decodeThemePreference(
+        prefs.getString(_themePreferenceKey),
       ),
     );
     _loaded = true;
@@ -43,6 +42,45 @@ class AppStore extends ChangeNotifier {
       'button=${_settings.countButtonOption.name}',
     );
     notifyListeners();
+  }
+
+  List<Person> _decodePeople(String? rawPeople) {
+    if (rawPeople == null) {
+      return [];
+    }
+
+    try {
+      return Person.decodeList(rawPeople);
+    } catch (error) {
+      appDebugLog('AppStore.load people decode failed: $error');
+      return [];
+    }
+  }
+
+  CountButtonOption _decodeCountButtonOption(String? rawValue) {
+    if (rawValue == null) {
+      return CountButtonOption.hotelBell;
+    }
+
+    try {
+      return CountButtonOption.values.byName(rawValue);
+    } catch (error) {
+      appDebugLog('AppStore.load count button decode failed: $error');
+      return CountButtonOption.hotelBell;
+    }
+  }
+
+  AppThemePreference _decodeThemePreference(String? rawValue) {
+    if (rawValue == null) {
+      return AppThemePreference.dark;
+    }
+
+    try {
+      return AppThemePreference.values.byName(rawValue);
+    } catch (error) {
+      appDebugLog('AppStore.load theme decode failed: $error');
+      return AppThemePreference.dark;
+    }
   }
 
   Future<void> addPerson(String name) async {

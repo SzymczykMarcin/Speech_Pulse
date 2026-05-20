@@ -25,7 +25,7 @@ class MeetingSession {
   MeetingSession(List<Person> people)
       : participants =
             people.map((person) => MeetingParticipant(person: person)).toList(),
-        selectedPersonId = people.first.id;
+        selectedPersonId = _firstPersonId(people);
 
   List<MeetingParticipant> participants;
   String selectedPersonId;
@@ -75,5 +75,12 @@ class MeetingSession {
               : item,
         )
         .toList();
+  }
+
+  static String _firstPersonId(List<Person> people) {
+    if (people.isEmpty) {
+      throw ArgumentError('MeetingSession requires at least one participant');
+    }
+    return people.first.id;
   }
 }
