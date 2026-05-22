@@ -65,6 +65,18 @@ flutter run -d emulator-5554
 
 If the emulator window opens off-screen, relaunch it from Android Studio Device Manager or move the emulator window back onto the visible desktop before running the app.
 
+Build a release with the public contact email injected at build time:
+
+```powershell
+Copy-Item release_config.local.ps1.example release_config.local.ps1
+# Edit release_config.local.ps1 locally. It is ignored by Git.
+.\tools\build_release_android.ps1 -Target appbundle
+```
+
+The committed privacy policy uses `{{PUBLIC_CONTACT_EMAIL}}`. GitHub Pages
+deployment renders that placeholder from the `PUBLIC_CONTACT_EMAIL` repository
+secret, so the email is not stored in repository source.
+
 ## Repository Hygiene
 
 The repository tracks app source, generated Android project files, Flutter web bootstrap files, tests, runtime assets, and `pubspec.lock`.
@@ -82,6 +94,9 @@ Runtime assets are intentionally tracked:
 Original source images in `icons/` are intentionally ignored because the processed app-ready icons are already committed under `assets/button_icons/`.
 
 Local build/tooling artifacts such as `.dart_tool/`, `build/`, `.idea/`, `.metadata`, `*.iml`, Flutter plugin registries, logs, and Android local SDK paths are ignored.
+
+Release-only local configuration such as `release_config.local.ps1`,
+`android/key.properties`, upload keystores, and `.env*` files must stay ignored.
 
 ## License Note
 

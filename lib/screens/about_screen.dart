@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../app_config.dart';
 import '../services/support_purchase_service.dart';
 import '../theme.dart';
 import '../widgets/pulse_widgets.dart';
@@ -146,15 +147,19 @@ class _AboutScreenState extends State<AboutScreen> {
             ),
           ),
           const SizedBox(height: 16),
-          const SurfacePanel(
+          SurfacePanel(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SectionLabel('Links'),
-                SizedBox(height: 12),
-                Text(
+                const SectionLabel('Links'),
+                const SizedBox(height: 12),
+                const Text(
                   'Privacy policy: see the Google Play listing or project documentation.',
                 ),
+                if (AppConfig.hasPublicContactEmail) ...[
+                  const SizedBox(height: 12),
+                  const Text('Contact: ${AppConfig.publicContactEmail}'),
+                ],
               ],
             ),
           ),

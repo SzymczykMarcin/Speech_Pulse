@@ -56,4 +56,4 @@ will be updated when material changes are made.
 
 For privacy questions, contact:
 
-`TODO: add public contact email`
+`{{PUBLIC_CONTACT_EMAIL}}`

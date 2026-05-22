@@ -12,6 +12,7 @@ doc/api/
 
 # dotenv environment variables file
 .env*
+release_config.local.ps1
 android/key.properties
 *.jks
 *.keystore
