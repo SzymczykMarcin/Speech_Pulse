@@ -81,8 +81,13 @@ Future<String?> showNameDialog(
         key: formKey,
         child: TextFormField(
           controller: controller,
-          autofocus: true,
           textCapitalization: TextCapitalization.words,
+          textInputAction: TextInputAction.done,
+          onFieldSubmitted: (_) {
+            if (formKey.currentState!.validate()) {
+              Navigator.pop(context, controller.text.trim());
+            }
+          },
           decoration: const InputDecoration(labelText: 'Name'),
           validator: (value) =>
               value == null || value.trim().isEmpty ? 'Name is required' : null,

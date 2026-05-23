@@ -179,6 +179,28 @@ void main() {
     expect(store.people, isEmpty);
   });
 
+  testWidgets('people screen displays more than five saved people',
+      (tester) async {
+    usePhoneViewport(tester);
+    final store = await loadedStore(
+      people: const [
+        Person(id: 'one', name: 'Gervazy'),
+        Person(id: 'two', name: 'Protazy'),
+        Person(id: 'three', name: 'Adelajda'),
+        Person(id: 'four', name: 'Anita'),
+        Person(id: 'five', name: 'Jowita'),
+        Person(id: 'six', name: 'Klemens'),
+      ],
+    );
+    await tester.pumpWidget(testApp(PeopleScreen(store: store)));
+
+    expect(find.text('Gervazy'), findsOneWidget);
+    expect(find.text('Jowita'), findsOneWidget);
+
+    await tester.scrollUntilVisible(find.text('Klemens'), 120);
+    expect(find.text('Klemens'), findsOneWidget);
+  });
+
   testWidgets('settings screen changes button style and theme',
       (tester) async {
     final store = await loadedStore();
