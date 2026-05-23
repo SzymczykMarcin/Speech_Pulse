@@ -79,30 +79,36 @@ class _MeetingSetupScreenState extends State<MeetingSetupScreen> {
           const SizedBox(height: 24),
           Row(
             children: [
-              TextButton.icon(
-                onPressed: _availablePeople.isEmpty
-                    ? null
-                    : () => setState(() {
-                          appDebugLog('MeetingSetup: Select all toggled');
-                          if (allSelected) {
-                            _selectedIds.clear();
-                          } else {
-                            _selectedIds
-                              ..clear()
-                              ..addAll(
-                                  _availablePeople.map((person) => person.id));
-                          }
-                        }),
-                icon: Icon(
-                  allSelected ? Icons.check_box : Icons.check_box_outline_blank,
+              Expanded(
+                child: TextButton.icon(
+                  onPressed: _availablePeople.isEmpty
+                      ? null
+                      : () => setState(() {
+                            appDebugLog('MeetingSetup: Select all toggled');
+                            if (allSelected) {
+                              _selectedIds.clear();
+                            } else {
+                              _selectedIds
+                                ..clear()
+                                ..addAll(_availablePeople
+                                    .map((person) => person.id));
+                            }
+                          }),
+                  icon: Icon(
+                    allSelected
+                        ? Icons.check_box
+                        : Icons.check_box_outline_blank,
+                  ),
+                  label: const FittedBox(child: Text('Select all')),
                 ),
-                label: const Text('Select all'),
               ),
-              const Spacer(),
-              OutlinedButton.icon(
-                onPressed: _addGuest,
-                icon: const Icon(Icons.person_add),
-                label: const Text('Add guest'),
+              const SizedBox(width: 12),
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: _addGuest,
+                  icon: const Icon(Icons.person_add),
+                  label: const FittedBox(child: Text('Add guest')),
+                ),
               ),
             ],
           ),

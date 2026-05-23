@@ -37,10 +37,12 @@ class ReportScreen extends StatelessWidget {
                       Icon(Icons.assignment_outlined,
                           color: context.pulseSecondary),
                       const SizedBox(width: 8),
-                      const Text(
-                        'Participant Summary',
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.w700),
+                      const Expanded(
+                        child: Text(
+                          'Participant Summary',
+                          style: TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.w700),
+                        ),
                       ),
                     ],
                   ),
@@ -129,7 +131,7 @@ class ReportScreen extends StatelessWidget {
                     Navigator.popUntil(context, (route) => route.isFirst);
                   },
                   icon: const Icon(Icons.add),
-                  label: const Text('New Meeting'),
+                  label: const FittedBox(child: Text('New Meeting')),
                 ),
               ),
               const SizedBox(width: 12),
@@ -140,7 +142,7 @@ class ReportScreen extends StatelessWidget {
                     Navigator.popUntil(context, (route) => route.isFirst);
                   },
                   icon: const Icon(Icons.home),
-                  label: const Text('Back Home'),
+                  label: const FittedBox(child: Text('Back Home')),
                 ),
               ),
             ],
