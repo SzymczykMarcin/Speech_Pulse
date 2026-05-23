@@ -56,4 +56,4 @@ will be updated when material changes are made.
 
 For privacy questions, contact:
 
-`{{PUBLIC_CONTACT_EMAIL}}`
+`marcin.szymczyk@solutionsms.pl`

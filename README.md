@@ -65,17 +65,17 @@ flutter run -d emulator-5554
 
 If the emulator window opens off-screen, relaunch it from Android Studio Device Manager or move the emulator window back onto the visible desktop before running the app.
 
-Build a release with the public contact email injected at build time:
+Build a release app bundle:
 
 ```powershell
-Copy-Item release_config.local.ps1.example release_config.local.ps1
-# Edit release_config.local.ps1 locally. It is ignored by Git.
 .\tools\build_release_android.ps1 -Target appbundle
 ```
 
-The committed privacy policy uses `{{PUBLIC_CONTACT_EMAIL}}`. GitHub Pages
-deployment renders that placeholder from the `PUBLIC_CONTACT_EMAIL` repository
-secret, so the email is not stored in repository source.
+To override the public contact email for a local release build, copy
+`release_config.local.ps1.example` to `release_config.local.ps1` and edit it
+locally. It is ignored by Git.
+
+The privacy policy is published through GitHub Pages from `docs/`.
 
 ## Repository Hygiene
 

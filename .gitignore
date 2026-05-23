@@ -47,3 +47,4 @@ logs/
 
 # Local emulator and tooling logs
 *.log
+debug_screenshots/
