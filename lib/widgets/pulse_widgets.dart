@@ -73,21 +73,30 @@ Future<String?> showNameDialog(
 }) {
   final controller = TextEditingController(text: initialValue);
   final formKey = GlobalKey<FormState>();
+  void submit(BuildContext context) {
+    if (formKey.currentState!.validate()) {
+      FocusScope.of(context).unfocus();
+      Navigator.pop(context, controller.text.trim());
+    }
+  }
+
   return showDialog<String>(
     context: context,
+    barrierDismissible: false,
     builder: (context) => AlertDialog(
       title: Text(title),
       content: Form(
         key: formKey,
         child: TextFormField(
           controller: controller,
+          autocorrect: false,
+          enableSuggestions: false,
+          smartDashesType: SmartDashesType.disabled,
+          smartQuotesType: SmartQuotesType.disabled,
           textCapitalization: TextCapitalization.words,
           textInputAction: TextInputAction.done,
-          onFieldSubmitted: (_) {
-            if (formKey.currentState!.validate()) {
-              Navigator.pop(context, controller.text.trim());
-            }
-          },
+          onTapOutside: (_) => FocusScope.of(context).unfocus(),
+          onFieldSubmitted: (_) => submit(context),
           decoration: const InputDecoration(labelText: 'Name'),
           validator: (value) =>
               value == null || value.trim().isEmpty ? 'Name is required' : null,
@@ -99,11 +108,7 @@ Future<String?> showNameDialog(
           child: const Text('Cancel'),
         ),
         FilledButton(
-          onPressed: () {
-            if (formKey.currentState!.validate()) {
-              Navigator.pop(context, controller.text.trim());
-            }
-          },
+          onPressed: () => submit(context),
           child: const Text('Save'),
         ),
       ],
